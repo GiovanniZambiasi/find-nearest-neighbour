@@ -12,7 +12,7 @@ namespace NearestNeighbour
         public void Setup(Bounds movementBounds)
         {
             _movementBounds = movementBounds;
-            _movementDirection = Random.onUnitSphere;
+            RandomizeMovementDirection();
         }
 
         public void Tick(float deltaTime)
@@ -22,9 +22,15 @@ namespace NearestNeighbour
             if (!_movementBounds.Contains(nextPosition))
             {
                 nextPosition = _movementBounds.ClosestPoint(nextPosition);
+                RandomizeMovementDirection();
             }
 
             transform.position = nextPosition;
+        }
+
+        private void RandomizeMovementDirection()
+        {
+            _movementDirection = Random.onUnitSphere;
         }
 
         private void OnDrawGizmos()
