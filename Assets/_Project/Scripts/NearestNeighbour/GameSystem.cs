@@ -15,9 +15,8 @@ namespace NearestNeighbour
         private void Update()
         {
             float deltaTime = Time.deltaTime;
-            int frame = Time.frameCount;
 
-            _neighbourManager.Tick(deltaTime, frame);
+            _neighbourManager.Tick(deltaTime);
         }
     }
 }
