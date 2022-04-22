@@ -123,7 +123,7 @@ namespace NearestNeighbour.NeighbourFinder
         private void RegisterNeighbour(FindNearestNeighbour neighbour)
         {
             neighbour.Setup(_movementBounds);
-            neighbour.OnDamaged += UnRegisterNeighbour;
+            neighbour.OnDamaged += HandleNeighbourDamaged;
             _neighbours.Add(neighbour);
         }
 
@@ -135,7 +135,7 @@ namespace NearestNeighbour.NeighbourFinder
                 return;
             }
 
-            neighbour.OnDamaged -= UnRegisterNeighbour;
+            neighbour.OnDamaged -= HandleNeighbourDamaged;
             _poolingService.Release(neighbour);
         }
 
@@ -144,6 +144,13 @@ namespace NearestNeighbour.NeighbourFinder
             int index = Random.Range(0, _neighbours.Count);
             FindNearestNeighbour deSpawned = _neighbours[index];
             UnRegisterNeighbour(deSpawned);
+        }
+
+        private void HandleNeighbourDamaged(FindNearestNeighbour neighbour)
+        {
+            UnRegisterNeighbour(neighbour);
+
+            OnNeighboursChanged?.Invoke(NeighbourCount);
         }
 
         private void OnDrawGizmos()
