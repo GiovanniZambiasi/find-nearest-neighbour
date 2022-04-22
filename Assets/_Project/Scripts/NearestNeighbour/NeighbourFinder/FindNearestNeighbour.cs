@@ -7,6 +7,8 @@ namespace NearestNeighbour.NeighbourFinder
         [SerializeField] private LineRenderer _renderer;
         [SerializeField] private RandomMovementComponent _movementComponent;
 
+        private NeighbourDistanceInfo _nearestNeighbour;
+
         public void Setup(Bounds movementBounds)
         {
             _movementComponent.Setup(movementBounds);
@@ -19,9 +21,22 @@ namespace NearestNeighbour.NeighbourFinder
 
         public void UpdateNearestNeighbour(NeighbourDistanceInfo distanceInfo)
         {
-            if (distanceInfo.IsValid)
+            if (!_nearestNeighbour.IsValid || _nearestNeighbour.DistanceSqr > distanceInfo.DistanceSqr)
             {
-                UpdateNeighbourFeedback(distanceInfo);
+                _nearestNeighbour = distanceInfo;
+            }
+        }
+
+        public void ResetNearestNeighbour()
+        {
+            _nearestNeighbour = default;
+        }
+
+        public void UpdateFeedback()
+        {
+            if (_nearestNeighbour.IsValid)
+            {
+                UpdateNeighbourFeedback(_nearestNeighbour);
             }
             else
             {

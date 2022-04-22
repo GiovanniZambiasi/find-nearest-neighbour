@@ -6,11 +6,11 @@ namespace NearestNeighbour.NeighbourFinder
     public class NeighbourManager : MonoBehaviour, INeighbourSpawner
     {
         [SerializeField] private FindNearestNeighbour _neighbourPrefab;
+        [SerializeField] private int _startingNeighbours = 10;
         [Header("Movement Settings")]
         [SerializeField] private Vector3 _boundsExtents = new Vector3(100f, 100f, 100f);
 
         private readonly List<FindNearestNeighbour> _neighbours = new List<FindNearestNeighbour>();
-        private readonly NeighbourCache _cache = new NeighbourCache();
         private IPoolingService _poolingService;
         private Bounds _movementBounds;
         private int _distanceQueries = 0;
@@ -23,6 +23,8 @@ namespace NearestNeighbour.NeighbourFinder
                 center = transform.position,
                 extents = _boundsExtents,
             };
+
+            SpawnNeighbours(_startingNeighbours);
         }
 
         public void Tick(float deltaTime)
@@ -53,7 +55,12 @@ namespace NearestNeighbour.NeighbourFinder
 
         private void UpdateDistances()
         {
-            _cache.Reset();
+            for (int i = 0; i < _neighbours.Count; i++)
+            {
+                FindNearestNeighbour neighbour = _neighbours[i];
+                neighbour.ResetNearestNeighbour();
+            }
+
             _distanceQueries = 0;
 
             for (int i = 0; i < _neighbours.Count; i++)
@@ -73,7 +80,9 @@ namespace NearestNeighbour.NeighbourFinder
             _distanceQueries++;
 
             float distanceSqr = Vector3.SqrMagnitude(from.transform.position - to.transform.position);
-            _cache.UpdateDistanceInfo(from.gameObject, to.gameObject, distanceSqr);
+
+            from.UpdateNearestNeighbour(new NeighbourDistanceInfo(to.gameObject, distanceSqr));
+            to.UpdateNearestNeighbour(new NeighbourDistanceInfo(from.gameObject, distanceSqr));
         }
 
         private void UpdateFeedbacks()
@@ -81,8 +90,7 @@ namespace NearestNeighbour.NeighbourFinder
             for (int i = 0; i < _neighbours.Count; i++)
             {
                 FindNearestNeighbour neighbour = _neighbours[i];
-                NeighbourDistanceInfo distanceInfo = _cache.GetDistanceInfo(neighbour.gameObject);
-                neighbour.UpdateNearestNeighbour(distanceInfo);
+                neighbour.UpdateFeedback();
             }
         }
 

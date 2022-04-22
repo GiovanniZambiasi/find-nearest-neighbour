@@ -153,6 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _neighbourPrefab: {fileID: 4704270748398357062, guid: 790e2602b2e8c3442bd4fe8fd84fa86d, type: 3}
+  _startingNeighbours: 200
   _boundsExtents: {x: 33, y: 8.28, z: 33}
 --- !u!4 &867034275
 Transform:

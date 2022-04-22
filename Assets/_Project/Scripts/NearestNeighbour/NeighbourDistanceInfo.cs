@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace NearestNeighbour
 {
@@ -8,7 +9,7 @@ namespace NearestNeighbour
     /// <br></br><br></br>
     /// IsValid exists to avoid a <i>nullcheck</i> against Neighbour, improving performance.
     /// </summary>
-    public struct NeighbourDistanceInfo
+    public struct NeighbourDistanceInfo : IComparable<NeighbourDistanceInfo>
     {
         public NeighbourDistanceInfo(GameObject neighbour, float distanceSqr)
         {
@@ -20,5 +21,10 @@ namespace NearestNeighbour
         public GameObject Neighbour { get; }
         public float DistanceSqr { get; }
         public bool IsValid { get; }
+
+        public int CompareTo(NeighbourDistanceInfo other)
+        {
+            return DistanceSqr.CompareTo(other.DistanceSqr);
+        }
     }
 }
