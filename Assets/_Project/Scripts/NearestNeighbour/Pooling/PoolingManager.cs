@@ -8,7 +8,8 @@ namespace NearestNeighbour.Pooling
         [SerializeField] private List<Pool> _pools = new List<Pool>();
 
         private readonly Dictionary<int, Pool> _spawnedObjects = new Dictionary<int, Pool>();
-        private readonly Dictionary<Component, Pool> _prefabPoolMap = new Dictionary<Component, Pool>();
+        private readonly Dictionary<int, Pool> _prefabPoolMap = new Dictionary<int, Pool>();
+        private readonly List<ScheduledDeSpawn> _scheduledDeSpawns = new List<ScheduledDeSpawn>();
 
         public void Setup()
         {
@@ -16,32 +17,48 @@ namespace NearestNeighbour.Pooling
             {
                 Pool pool = _pools[i];
 
-                GameObject root = new GameObject(pool.Prefab.GetType().Name);
+                GameObject root = new GameObject(pool.Prefab.name);
                 root.transform.SetParent(transform);
 
                 pool.Setup(root.transform);
 
-                _prefabPoolMap.Add(pool.Prefab, pool);
+                _prefabPoolMap.Add(pool.Prefab.GetInstanceID(), pool);
             }
         }
 
-        public Component Spawn(Component prefab, Vector3 position, Quaternion rotation)
+        public void Tick(float elapsedTime)
         {
-            if (!_prefabPoolMap.ContainsKey(prefab))
+            for (int i = _scheduledDeSpawns.Count - 1; i >= 0; i--)
+            {
+                ScheduledDeSpawn deSpawn = _scheduledDeSpawns[i];
+
+                if (elapsedTime >= deSpawn.DespawnTime)
+                {
+                    Release(deSpawn.Object);
+                    _scheduledDeSpawns.RemoveAt(i);
+                }
+            }
+        }
+
+        public GameObject Spawn(GameObject prefab, Vector3 position, Quaternion rotation)
+        {
+            int prefabInstanceId = prefab.GetInstanceID();
+
+            if (!_prefabPoolMap.ContainsKey(prefabInstanceId))
             {
                 Debug.LogError($"Doesn't have registered pool for prefab '{prefab.name}'");
 
-                return null;
+                return default;
             }
 
-            Pool pool = _prefabPoolMap[prefab];
-            Component spawnedObject = pool.Get(position, rotation);
+            Pool pool = _prefabPoolMap[prefabInstanceId];
+            GameObject spawnedObject = pool.Get(position, rotation);
             _spawnedObjects.Add(spawnedObject.GetInstanceID(), pool);
 
             return spawnedObject;
         }
 
-        public void Release(Component instance)
+        public void Release(GameObject instance)
         {
             int instanceId = instance.GetInstanceID();
 
@@ -55,6 +72,17 @@ namespace NearestNeighbour.Pooling
             pool.Release(instance);
 
             _spawnedObjects.Remove(instanceId);
+        }
+
+        public void Release(GameObject instance, float delay)
+        {
+            float deSpawnTime = Time.time + delay;
+
+            _scheduledDeSpawns.Add(new ScheduledDeSpawn
+            {
+                Object = instance,
+                DespawnTime = deSpawnTime,
+            });
         }
     }
 }

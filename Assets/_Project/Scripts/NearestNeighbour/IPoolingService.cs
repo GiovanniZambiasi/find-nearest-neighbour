@@ -4,8 +4,10 @@ namespace NearestNeighbour
 {
     public interface IPoolingService
     {
-        Component Spawn(Component prefab, Vector3 position, Quaternion rotation);
+        GameObject Spawn(GameObject prefab, Vector3 position, Quaternion rotation);
 
-        void Release(Component instance);
+        void Release(GameObject instance);
+
+        void Release(GameObject instance, float delay);
     }
 }

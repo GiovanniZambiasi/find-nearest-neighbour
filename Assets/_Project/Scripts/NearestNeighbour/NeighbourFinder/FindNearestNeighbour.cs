@@ -6,14 +6,16 @@ namespace NearestNeighbour.NeighbourFinder
     {
         public event System.Action<FindNearestNeighbour> OnDamaged;
 
-        [SerializeField] private LineRenderer _renderer;
         [SerializeField] private RandomMovementComponent _movementComponent;
+        [SerializeField] private NeighbourView _view;
 
         private NeighbourDistanceInfo _nearestNeighbour;
+        private IPoolingService _poolingService;
 
-        public void Setup(Bounds movementBounds)
+        public void Setup(Bounds movementBounds, IPoolingService poolingService)
         {
             _movementComponent.Setup(movementBounds);
+            _poolingService = poolingService;
         }
 
         public void UpdateMovement(float deltaTime)
@@ -38,26 +40,18 @@ namespace NearestNeighbour.NeighbourFinder
         {
             if (_nearestNeighbour.IsValid)
             {
-                UpdateNeighbourFeedback(_nearestNeighbour);
+                _view.ShowNearestNeighbourFeedback(_nearestNeighbour.Neighbour.transform.localPosition);
             }
             else
             {
-                _renderer.enabled = false;
+                _view.HideNearestNeighbourFeedback();
             }
         }
 
         public void Damage()
         {
+            _view.SpawnDeathEffect(_poolingService);
             OnDamaged?.Invoke(this);
-        }
-
-        private void UpdateNeighbourFeedback(NeighbourDistanceInfo distanceInfo)
-        {
-            _renderer.enabled = true;
-            _renderer.SetPosition(0, transform.position);
-
-            Vector3 neighbourPosition = distanceInfo.Neighbour.transform.position;
-            _renderer.SetPosition(1, neighbourPosition);
         }
     }
 }

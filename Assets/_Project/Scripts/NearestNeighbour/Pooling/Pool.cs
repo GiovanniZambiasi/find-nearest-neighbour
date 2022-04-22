@@ -6,13 +6,13 @@ namespace NearestNeighbour.Pooling
     [System.Serializable]
     public class Pool
     {
-        [SerializeField] private Component _prefab;
+        [SerializeField] private GameObject _prefab;
         [SerializeField] private int _defaultObjectCount = 10;
 
-        private Queue<Component> _objects = new Queue<Component>();
+        private Queue<GameObject> _objects = new Queue<GameObject>();
         private Transform _parent;
 
-        public Component Prefab => _prefab;
+        public GameObject Prefab => _prefab;
 
         public void Setup(Transform parent)
         {
@@ -24,14 +24,14 @@ namespace NearestNeighbour.Pooling
             }
         }
 
-        public Component Get(Vector3 position, Quaternion rotation)
+        public GameObject Get(Vector3 position, Quaternion rotation)
         {
             if (_objects.Count == 0)
             {
                 Instantiate();
             }
 
-            Component instance = _objects.Dequeue();
+            GameObject instance = _objects.Dequeue();
 
             Transform transform = instance.transform;
             transform.position = position;
@@ -43,7 +43,7 @@ namespace NearestNeighbour.Pooling
             return instance;
         }
 
-        public void Release(Component instance)
+        public void Release(GameObject instance)
         {
             instance.gameObject.SetActive(false);
             instance.transform.SetParent(_parent);
@@ -54,7 +54,7 @@ namespace NearestNeighbour.Pooling
         {
             _prefab.gameObject.SetActive(false);
 
-            Component instance = Object.Instantiate(_prefab, _parent);
+            GameObject instance = Object.Instantiate(_prefab, _parent);
             _objects.Enqueue(instance);
 
             _prefab.gameObject.SetActive(true);

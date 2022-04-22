@@ -12,6 +12,7 @@ namespace NearestNeighbour.Player
         [SerializeField] private float _projectileImpulse = 10f;
         [SerializeField] private float _projectilesPerSecond = 10f;
 
+        private readonly GameObjectComponentCache<Projectile> _projectileCache = new GameObjectComponentCache<Projectile>();
         private readonly GameObjectComponentCache<IDamageable> _damageableCache = new GameObjectComponentCache<IDamageable>();
         private IPoolingService _poolingService;
         private float _projectileSpawnInterval;
@@ -49,8 +50,12 @@ namespace NearestNeighbour.Player
             }
 
             Vector3 spawnPosition = ProjectileSpawnPosition;
-            Projectile projectile = _poolingService.Spawn(_projectilePrefab, spawnPosition, transform.rotation) as Projectile;
-            projectile.Setup(transform.forward * _projectileImpulse, HandleHit);
+            GameObject projectileObject =  _poolingService.Spawn(_projectilePrefab.gameObject, spawnPosition, transform.rotation);
+
+            if (_projectileCache.TryGetComponent(projectileObject, out Projectile projectile))
+            {
+                projectile.Setup(transform.forward * _projectileImpulse, HandleHit);
+            }
 
             _lastFireTime = Time.time;
             OnFired?.Invoke();
@@ -59,7 +64,7 @@ namespace NearestNeighbour.Player
         private void HandleHit(Projectile projectile, Collider other)
         {
             TryDamage(other);
-            _poolingService.Release(projectile);
+            _poolingService.Release(projectile.gameObject);
         }
 
         private void TryDamage(Collider other)

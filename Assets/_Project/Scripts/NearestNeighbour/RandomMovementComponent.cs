@@ -4,6 +4,8 @@ namespace NearestNeighbour
 {
     public class RandomMovementComponent : MonoBehaviour
     {
+        public event System.Action OnDirectionChanged;
+
         [SerializeField] private float _speed = 3f;
 
         private Bounds _movementBounds;
@@ -23,6 +25,7 @@ namespace NearestNeighbour
             {
                 nextPosition = _movementBounds.ClosestPoint(nextPosition);
                 RandomizeMovementDirection();
+                OnDirectionChanged?.Invoke();
             }
 
             transform.localPosition = nextPosition;

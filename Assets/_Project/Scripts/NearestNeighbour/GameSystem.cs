@@ -39,6 +39,8 @@ namespace NearestNeighbour
             _playerManager.Tick();
 
             _uiManager.SetQueryCount(_neighbourManager.DistanceQueries);
+
+            _poolingManager.Tick(Time.time);
         }
     }
 }

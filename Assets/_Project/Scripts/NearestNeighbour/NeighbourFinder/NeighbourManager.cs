@@ -13,6 +13,7 @@ namespace NearestNeighbour.NeighbourFinder
         [Header("Movement Settings")]
         [SerializeField] private Vector3 _boundsExtents = new Vector3(100f, 100f, 100f);
 
+        private readonly GameObjectComponentCache<FindNearestNeighbour> _neighbourComponentCache = new GameObjectComponentCache<FindNearestNeighbour>();
         private readonly List<FindNearestNeighbour> _neighbours = new List<FindNearestNeighbour>();
         private IPoolingService _poolingService;
         private Bounds _movementBounds;
@@ -45,12 +46,21 @@ namespace NearestNeighbour.NeighbourFinder
 
             for (int i = 0; i < count; i++)
             {
-                Vector3 spawnPosition = _movementBounds.GetRandomPointWithin();
-                FindNearestNeighbour neighbour = _poolingService.Spawn(_neighbourPrefab, spawnPosition, Quaternion.identity) as FindNearestNeighbour;
-                RegisterNeighbour(neighbour);
+                SpawnNeighbour();
             }
 
             OnNeighboursChanged?.Invoke(NeighbourCount);
+        }
+
+        private void SpawnNeighbour()
+        {
+            Vector3 spawnPosition = _movementBounds.GetRandomPointWithin();
+            GameObject neighbourObject = _poolingService.Spawn(_neighbourPrefab.gameObject, spawnPosition, Quaternion.identity);
+
+            if (_neighbourComponentCache.TryGetComponent(neighbourObject, out FindNearestNeighbour neighbour))
+            {
+                RegisterNeighbour(neighbour);
+            }
         }
 
         private void UpdateMovement(float deltaTime)
@@ -122,7 +132,7 @@ namespace NearestNeighbour.NeighbourFinder
 
         private void RegisterNeighbour(FindNearestNeighbour neighbour)
         {
-            neighbour.Setup(_movementBounds);
+            neighbour.Setup(_movementBounds, _poolingService);
             neighbour.OnDamaged += HandleNeighbourDamaged;
             _neighbours.Add(neighbour);
         }
@@ -136,7 +146,7 @@ namespace NearestNeighbour.NeighbourFinder
             }
 
             neighbour.OnDamaged -= HandleNeighbourDamaged;
-            _poolingService.Release(neighbour);
+            _poolingService.Release(neighbour.gameObject);
         }
 
         private void DeSpawnRandom()

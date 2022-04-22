@@ -139,11 +139,12 @@ GameObject:
   m_Component:
   - component: {fileID: 104663809727270524}
   - component: {fileID: 1283320813567227785}
+  - component: {fileID: 8464987529634132325}
   - component: {fileID: 1836912016933540212}
   - component: {fileID: 2534747457854832789}
-  - component: {fileID: 8464987529634132325}
   - component: {fileID: 4704270748398357062}
   - component: {fileID: 9052310489571601829}
+  - component: {fileID: 1400604454029439719}
   m_Layer: 0
   m_Name: Neighbour
   m_TagString: Untagged
@@ -182,6 +183,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!65 &8464987529634132325
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6128410439664759824}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!33 &1836912016933540212
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -231,19 +245,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &8464987529634132325
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6128410439664759824}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &4704270748398357062
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -256,8 +257,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04a47a9fad0241588db2c9910c49a042, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _renderer: {fileID: 4372440912159080695}
   _movementComponent: {fileID: 9052310489571601829}
+  _view: {fileID: 1400604454029439719}
 --- !u!114 &9052310489571601829
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -271,3 +272,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 3
+--- !u!114 &1400604454029439719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6128410439664759824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f77138f3bdb0424daed06edce6a2f722, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _deathParticlesPrefab: {fileID: 4980435433315027153, guid: 6457ee9fed7798048a71c973d535a5de, type: 3}
+  _lineRenderer: {fileID: 4372440912159080695}
+  _renderer: {fileID: 2534747457854832789}
