@@ -19,6 +19,19 @@ namespace NearestNeighbour.NeighbourFinder
 
         public void UpdateNearestNeighbour(NeighbourDistanceInfo distanceInfo)
         {
+            if (distanceInfo.IsValid)
+            {
+                UpdateNeighbourFeedback(distanceInfo);
+            }
+            else
+            {
+                _renderer.enabled = false;
+            }
+        }
+
+        private void UpdateNeighbourFeedback(NeighbourDistanceInfo distanceInfo)
+        {
+            _renderer.enabled = true;
             _renderer.SetPosition(0, transform.position);
 
             Vector3 neighbourPosition = distanceInfo.Neighbour.transform.position;

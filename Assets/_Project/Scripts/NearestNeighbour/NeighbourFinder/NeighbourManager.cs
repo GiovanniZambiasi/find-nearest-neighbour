@@ -1,32 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace NearestNeighbour.NeighbourFinder
 {
-    public class NeighbourManager : MonoBehaviour
+    public class NeighbourManager : MonoBehaviour, INeighbourSpawner
     {
-        [SerializeField] private List<FindNearestNeighbour> _neighbours = new List<FindNearestNeighbour>();
-        [SerializeField] private NeighbourCache _cache;
+        [SerializeField] private FindNearestNeighbour _neighbourPrefab;
         [Header("Movement Settings")]
         [SerializeField] private Vector3 _boundsExtents = new Vector3(100f, 100f, 100f);
 
+        private readonly List<FindNearestNeighbour> _neighbours = new List<FindNearestNeighbour>();
+        private readonly NeighbourCache _cache = new NeighbourCache();
+        private IPoolingService _poolingService;
         private Bounds _movementBounds;
         private int _distanceQueries = 0;
 
-        public void Setup()
+        public void Setup(IPoolingService poolingService)
         {
+            _poolingService = poolingService;
             _movementBounds = new Bounds
             {
                 center = transform.position,
                 extents = _boundsExtents,
             };
-
-            for (int i = 0; i < _neighbours.Count; i++)
-            {
-                FindNearestNeighbour neighbour = _neighbours[i];
-                SetupNeighbour(neighbour);
-            }
         }
 
         public void Tick(float deltaTime)
@@ -34,6 +30,16 @@ namespace NearestNeighbour.NeighbourFinder
             UpdateMovement(deltaTime);
             UpdateDistances();
             UpdateFeedbacks();
+        }
+
+        public void SpawnNeighbours(int count)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                Vector3 spawnPosition = _movementBounds.GetRandomPointWithin();
+                FindNearestNeighbour neighbour = _poolingService.Spawn(_neighbourPrefab, spawnPosition, Quaternion.identity) as FindNearestNeighbour;
+                RegisterNeighbour(neighbour);
+            }
         }
 
         private void UpdateMovement(float deltaTime)
@@ -57,7 +63,6 @@ namespace NearestNeighbour.NeighbourFinder
                 for (int j = i + 1; j < _neighbours.Count; j++)
                 {
                     FindNearestNeighbour to = _neighbours[j];
-
                     UpdateDistance(from, to);
                 }
             }
@@ -81,15 +86,34 @@ namespace NearestNeighbour.NeighbourFinder
             }
         }
 
-        private void SetupNeighbour(FindNearestNeighbour neighbour)
+        private void RegisterNeighbour(FindNearestNeighbour neighbour)
         {
             neighbour.Setup(_movementBounds);
+            _neighbours.Add(neighbour);
+        }
+
+        private void UnRegisterNeighbour(FindNearestNeighbour neighbour)
+        {
+            if (!_neighbours.Remove(neighbour))
+            {
+                Debug.LogError($"Trying to unregister already unregistered {nameof(FindNearestNeighbour)} '{neighbour.name}'");
+                return;
+            }
+
+            _poolingService.Release(neighbour);
         }
 
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireCube(transform.position, _boundsExtents * 2f);
+        }
+
+        public void DespawnRandom()     // TODO - Remove later
+        {
+            int index = Random.Range(0, _neighbours.Count);
+            FindNearestNeighbour despawned = _neighbours[index];
+            UnRegisterNeighbour(despawned);
         }
     }
 }
