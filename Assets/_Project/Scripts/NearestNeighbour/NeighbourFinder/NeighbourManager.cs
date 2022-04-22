@@ -62,11 +62,19 @@ namespace NearestNeighbour.NeighbourFinder
             }
         }
 
-        public void DespawnRandom()     // TODO - Remove later
+        public void DeSpawnNeighbours(int count)
         {
-            int index = Random.Range(0, _neighbours.Count);
-            FindNearestNeighbour despawned = _neighbours[index];
-            UnRegisterNeighbour(despawned);
+            for (int i = 0; i < count; i++)
+            {
+                if (NeighbourCount > 0)
+                {
+                    DeSpawnRandom();
+                }
+                else
+                {
+                    break;
+                }
+            }
 
             OnNeighboursChanged?.Invoke(NeighbourCount);
         }
@@ -127,6 +135,13 @@ namespace NearestNeighbour.NeighbourFinder
             }
 
             _poolingService.Release(neighbour);
+        }
+
+        private void DeSpawnRandom()
+        {
+            int index = Random.Range(0, _neighbours.Count);
+            FindNearestNeighbour deSpawned = _neighbours[index];
+            UnRegisterNeighbour(deSpawned);
         }
 
         private void OnDrawGizmos()

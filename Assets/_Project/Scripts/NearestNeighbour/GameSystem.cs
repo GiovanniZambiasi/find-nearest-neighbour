@@ -17,6 +17,7 @@ namespace NearestNeighbour
 
             _uiManager.Setup();
             _uiManager.OnNeighbourSpawnRequested += _neighbourManager.SpawnNeighbours;
+            _uiManager.OnNeighbourDeSpawnRequested += _neighbourManager.DeSpawnNeighbours;
 
             _neighbourManager.Setup(_poolingManager);
             _neighbourManager.OnNeighboursChanged += _uiManager.SetNeighbourCount;
@@ -29,15 +30,6 @@ namespace NearestNeighbour
             float deltaTime = Time.deltaTime;
 
             _neighbourManager.Tick(deltaTime);
-
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                _neighbourManager.SpawnNeighbours(3);
-            }
-            else if (Input.GetKeyDown(KeyCode.Backspace))
-            {
-                _neighbourManager.DespawnRandom();
-            }
 
             _uiManager.SetQueryCount(_neighbourManager.DistanceQueries);
         }

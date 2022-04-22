@@ -6,9 +6,11 @@ namespace NearestNeighbour.UI
     public class NeighboursPopup : MonoBehaviour
     {
         public event System.Action<int> OnSpawnRequested;
+        public event System.Action<int> OnDeSpawnRequested;
 
         [SerializeField] private InputField _spawnCountInputField;
         [SerializeField] private Button _spawnButton;
+        [SerializeField] private Button _deSpawnButton;
         [SerializeField] private Text _countLabel;
         [SerializeField] private Text _queriesLabel;
 
@@ -16,8 +18,12 @@ namespace NearestNeighbour.UI
         {
             _spawnCountInputField.onValidateInput += ValidateInput;
             _spawnCountInputField.onEndEdit.AddListener(HandleInputEditFinished);
-            _spawnButton.interactable = false;
+
             _spawnButton.onClick.AddListener(HandleSpawnButtonClicked);
+            _spawnButton.interactable = false;
+
+            _deSpawnButton.onClick.AddListener(HandleDeSpawnButtonClicked);
+            _deSpawnButton.interactable = false;
         }
 
         public void SetQueryCount(int queries)
@@ -32,14 +38,26 @@ namespace NearestNeighbour.UI
 
         private void HandleInputEditFinished(string input)
         {
-            _spawnButton.interactable = int.TryParse(input, out int count);
+            bool isValidInput = int.TryParse(input, out int count);
+            _spawnButton.interactable = isValidInput;
+            _deSpawnButton.interactable = isValidInput;
         }
 
         private void HandleSpawnButtonClicked()
         {
+            ParseInputAndSendEvent(OnSpawnRequested);
+        }
+
+        private void HandleDeSpawnButtonClicked()
+        {
+            ParseInputAndSendEvent(OnDeSpawnRequested);
+        }
+
+        private void ParseInputAndSendEvent(System.Action<int> @event)
+        {
             if (int.TryParse(_spawnCountInputField.text, out int amount))
             {
-                OnSpawnRequested?.Invoke(amount);
+                @event?.Invoke(amount);
             }
             else
             {

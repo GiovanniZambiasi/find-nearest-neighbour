@@ -9,6 +9,11 @@ namespace NearestNeighbour.UI
             add => _neighbours.OnSpawnRequested += value;
             remove => _neighbours.OnSpawnRequested -= value;
         }
+        public event System.Action<int> OnNeighbourDeSpawnRequested
+        {
+            add => _neighbours.OnDeSpawnRequested += value;
+            remove => _neighbours.OnDeSpawnRequested -= value;
+        }
 
         [SerializeField] private NeighboursPopup _neighbours;
 
