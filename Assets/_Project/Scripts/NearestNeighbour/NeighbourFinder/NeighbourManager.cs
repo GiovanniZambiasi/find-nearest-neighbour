@@ -123,6 +123,7 @@ namespace NearestNeighbour.NeighbourFinder
         private void RegisterNeighbour(FindNearestNeighbour neighbour)
         {
             neighbour.Setup(_movementBounds);
+            neighbour.OnDamaged += UnRegisterNeighbour;
             _neighbours.Add(neighbour);
         }
 
@@ -134,6 +135,7 @@ namespace NearestNeighbour.NeighbourFinder
                 return;
             }
 
+            neighbour.OnDamaged -= UnRegisterNeighbour;
             _poolingService.Release(neighbour);
         }
 

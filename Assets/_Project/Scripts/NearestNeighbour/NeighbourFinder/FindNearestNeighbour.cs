@@ -2,8 +2,10 @@
 
 namespace NearestNeighbour.NeighbourFinder
 {
-    public class FindNearestNeighbour : MonoBehaviour
+    public class FindNearestNeighbour : MonoBehaviour, IDamageable
     {
+        public event System.Action<FindNearestNeighbour> OnDamaged;
+
         [SerializeField] private LineRenderer _renderer;
         [SerializeField] private RandomMovementComponent _movementComponent;
 
@@ -42,6 +44,11 @@ namespace NearestNeighbour.NeighbourFinder
             {
                 _renderer.enabled = false;
             }
+        }
+
+        public void Damage()
+        {
+            OnDamaged?.Invoke(this);
         }
 
         private void UpdateNeighbourFeedback(NeighbourDistanceInfo distanceInfo)

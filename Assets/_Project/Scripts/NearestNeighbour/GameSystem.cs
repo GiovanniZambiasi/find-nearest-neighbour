@@ -1,4 +1,5 @@
 using NearestNeighbour.NeighbourFinder;
+using NearestNeighbour.Player;
 using NearestNeighbour.Pooling;
 using NearestNeighbour.UI;
 using UnityEngine;
@@ -10,6 +11,7 @@ namespace NearestNeighbour
         [SerializeField] private NeighbourManager _neighbourManager;
         [SerializeField] private PoolingManager _poolingManager;
         [SerializeField] private UIManager _uiManager;
+        [SerializeField] private PlayerManager _playerManager;
 
         private void Start()
         {
@@ -22,6 +24,8 @@ namespace NearestNeighbour
             _neighbourManager.Setup(_poolingManager);
             _neighbourManager.OnNeighboursChanged += _uiManager.SetNeighbourCount;
 
+            _playerManager.Setup(_poolingManager);
+
             _uiManager.SetNeighbourCount(_neighbourManager.NeighbourCount);
         }
 
@@ -30,6 +34,8 @@ namespace NearestNeighbour
             float deltaTime = Time.deltaTime;
 
             _neighbourManager.Tick(deltaTime);
+
+            _playerManager.Tick();
 
             _uiManager.SetQueryCount(_neighbourManager.DistanceQueries);
         }
