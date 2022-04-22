@@ -79,7 +79,7 @@ namespace NearestNeighbour.NeighbourFinder
         {
             _distanceQueries++;
 
-            float distanceSqr = Vector3.SqrMagnitude(from.transform.position - to.transform.position);
+            float distanceSqr = Vector3.SqrMagnitude(from.transform.localPosition - to.transform.localPosition);
 
             from.UpdateNearestNeighbour(new NeighbourDistanceInfo(to.gameObject, distanceSqr));
             to.UpdateNearestNeighbour(new NeighbourDistanceInfo(from.gameObject, distanceSqr));

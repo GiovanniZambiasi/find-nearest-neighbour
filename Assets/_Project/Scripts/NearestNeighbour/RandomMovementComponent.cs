@@ -17,7 +17,7 @@ namespace NearestNeighbour
 
         public void Tick(float deltaTime)
         {
-            Vector3 nextPosition = transform.position + _movementDirection * (_speed * deltaTime);
+            Vector3 nextPosition = transform.localPosition + _movementDirection * (_speed * deltaTime);
 
             if (!_movementBounds.Contains(nextPosition))
             {
@@ -25,7 +25,7 @@ namespace NearestNeighbour
                 RandomizeMovementDirection();
             }
 
-            transform.position = nextPosition;
+            transform.localPosition = nextPosition;
         }
 
         private void RandomizeMovementDirection()
@@ -36,7 +36,7 @@ namespace NearestNeighbour
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.blue;
-            Gizmos.DrawRay(transform.position, _movementDirection * 2f);
+            Gizmos.DrawRay(transform.localPosition, _movementDirection * 2f);
         }
     }
 }
