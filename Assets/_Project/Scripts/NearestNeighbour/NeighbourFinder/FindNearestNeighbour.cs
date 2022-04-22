@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace NearestNeighbour.NeighbourFinder
 {
-    public class FindNearestNeighbour : MonoBehaviour, IDamageable
+    public class FindNearestNeighbour : MonoBehaviour, IDamageable, IPoolFeedbackReceiver
     {
         public event System.Action<FindNearestNeighbour> OnDamaged;
 
@@ -52,6 +53,12 @@ namespace NearestNeighbour.NeighbourFinder
         {
             _view.SpawnDeathEffect(_poolingService);
             OnDamaged?.Invoke(this);
+        }
+
+        public void HandleInstantiated()
+        {
+            _view.HandleInstantiated();
+            _movementComponent.OnDirectionChanged += _view.PlayBounceFeedback;
         }
     }
 }

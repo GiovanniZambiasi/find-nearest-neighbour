@@ -57,6 +57,11 @@ namespace NearestNeighbour.Pooling
             GameObject instance = Object.Instantiate(_prefab, _parent);
             _objects.Enqueue(instance);
 
+            if(instance.TryGetComponent(out IPoolFeedbackReceiver poolFeedbackReceiver))
+            {
+                poolFeedbackReceiver.HandleInstantiated();
+            }
+
             _prefab.gameObject.SetActive(true);
         }
     }
