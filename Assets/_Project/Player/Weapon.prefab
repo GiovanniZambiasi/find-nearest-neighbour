@@ -46,4 +46,4 @@ MonoBehaviour:
   _projectilePrefab: {fileID: 7297133609170740684, guid: 6497758d3c3aaf14b9ff1c6b77d07525, type: 3}
   _projectileSpawnForwardOffset: 3
   _projectileImpulse: 1500
-  _projectilesPerSecond: 10
+  _projectilesPerSecond: 6

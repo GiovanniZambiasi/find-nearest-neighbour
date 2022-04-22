@@ -4,6 +4,9 @@ namespace NearestNeighbour.Player
 {
     public class Weapon : MonoBehaviour
     {
+        public event System.Action<IDamageable> OnTargetHit;
+        public event System.Action OnFired;
+
         [SerializeField] private Projectile _projectilePrefab;
         [SerializeField] private float _projectileSpawnForwardOffset = 3f;
         [SerializeField] private float _projectileImpulse = 10f;
@@ -50,6 +53,7 @@ namespace NearestNeighbour.Player
             projectile.Setup(transform.forward * _projectileImpulse, HandleHit);
 
             _lastFireTime = Time.time;
+            OnFired?.Invoke();
         }
 
         private void HandleHit(Projectile projectile, Collider other)
@@ -72,6 +76,7 @@ namespace NearestNeighbour.Player
             if (_damageableCache.TryGetComponent(hitObject, out IDamageable damageable))
             {
                 damageable.Damage();
+                OnTargetHit?.Invoke(damageable);
             }
         }
     }

@@ -16,6 +16,7 @@ namespace NearestNeighbour.UI
         }
 
         [SerializeField] private NeighboursPopup _neighbours;
+        [SerializeField] private PlayerStatsPopup _playerStats;
 
         public void Setup()
         {
@@ -30,6 +31,11 @@ namespace NearestNeighbour.UI
         public void SetQueryCount(int distanceQueries)
         {
             _neighbours.SetQueryCount(distanceQueries);
+        }
+
+        public void SetPlayerStats(PlayerStats stats)
+        {
+            _playerStats.SetStats(stats);
         }
     }
 }

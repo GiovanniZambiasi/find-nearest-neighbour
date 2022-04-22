@@ -5,14 +5,20 @@ namespace NearestNeighbour.Player
 {
     public class PlayerManager : MonoBehaviour
     {
+        public event System.Action<PlayerStats> OnStatsChanged;
+
         [SerializeField] private Camera _camera;
         [SerializeField] private Weapon _weapon;
+
+        private PlayerStats _stats;
 
         private bool ShouldFire => Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject(0);
 
         public void Setup(IPoolingService poolingService)
         {
             _weapon.Setup(poolingService);
+            _weapon.OnFired += HandleFired;
+            _weapon.OnTargetHit += HandleTargetHit;
         }
 
         public void Tick()
@@ -21,6 +27,18 @@ namespace NearestNeighbour.Player
             {
                 FireWeapon();
             }
+        }
+
+        private void HandleTargetHit(IDamageable obj)
+        {
+            _stats.Hits++;
+            OnStatsChanged?.Invoke(_stats);
+        }
+
+        private void HandleFired()
+        {
+            _stats.FiredProjectiles++;
+            OnStatsChanged?.Invoke(_stats);
         }
 
         private void FireWeapon()

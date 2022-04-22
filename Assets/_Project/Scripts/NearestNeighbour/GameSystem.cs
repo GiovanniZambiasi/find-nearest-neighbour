@@ -25,6 +25,7 @@ namespace NearestNeighbour
             _neighbourManager.OnNeighboursChanged += _uiManager.SetNeighbourCount;
 
             _playerManager.Setup(_poolingManager);
+            _playerManager.OnStatsChanged += _uiManager.SetPlayerStats;
 
             _uiManager.SetNeighbourCount(_neighbourManager.NeighbourCount);
         }
