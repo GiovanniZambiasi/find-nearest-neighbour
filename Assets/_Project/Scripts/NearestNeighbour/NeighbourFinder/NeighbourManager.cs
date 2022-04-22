@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace NearestNeighbour.NeighbourFinder
 {
-    public class NeighbourManager : MonoBehaviour, INeighbourSpawner
+    public class NeighbourManager : MonoBehaviour
     {
         public event System.Action<int> OnNeighboursChanged;
 

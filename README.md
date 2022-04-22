@@ -14,6 +14,6 @@ word well
 
 ## TODO:
 - [ ] Spawn with keys?
-- [ ] Player shooting
+- [X] Player shooting
 - [ ] Shader effects for fun?
-- [ ] Shooting Statistics
+- [X] Shooting Statistics

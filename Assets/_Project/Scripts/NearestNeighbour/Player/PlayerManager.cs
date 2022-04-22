@@ -12,7 +12,7 @@ namespace NearestNeighbour.Player
 
         private PlayerStats _stats;
 
-        private bool ShouldFire => Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject(0);
+        private bool ShouldFire => Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverUI();
 
         public void Setup(IPoolingService poolingService)
         {

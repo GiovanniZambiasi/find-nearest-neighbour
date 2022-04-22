@@ -8,7 +8,7 @@ namespace NearestNeighbour.Pooling
         [SerializeField] private List<Pool> _pools = new List<Pool>();
 
         private readonly Dictionary<int, Pool> _spawnedObjects = new Dictionary<int, Pool>();
-        private readonly Dictionary<MonoBehaviour, Pool> _prefabPoolMap = new Dictionary<MonoBehaviour, Pool>();
+        private readonly Dictionary<Component, Pool> _prefabPoolMap = new Dictionary<Component, Pool>();
 
         public void Setup()
         {
@@ -25,7 +25,7 @@ namespace NearestNeighbour.Pooling
             }
         }
 
-        public MonoBehaviour Spawn(MonoBehaviour prefab, Vector3 position, Quaternion rotation)
+        public Component Spawn(Component prefab, Vector3 position, Quaternion rotation)
         {
             if (!_prefabPoolMap.ContainsKey(prefab))
             {
@@ -35,13 +35,13 @@ namespace NearestNeighbour.Pooling
             }
 
             Pool pool = _prefabPoolMap[prefab];
-            MonoBehaviour spawnedObject = pool.Get(position, rotation);
+            Component spawnedObject = pool.Get(position, rotation);
             _spawnedObjects.Add(spawnedObject.GetInstanceID(), pool);
 
             return spawnedObject;
         }
 
-        public void Release(MonoBehaviour instance)
+        public void Release(Component instance)
         {
             int instanceId = instance.GetInstanceID();
 

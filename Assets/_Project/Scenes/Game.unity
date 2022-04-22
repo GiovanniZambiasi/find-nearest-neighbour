@@ -3240,6 +3240,8 @@ MonoBehaviour:
     _defaultObjectCount: 10
   - _prefab: {fileID: 7297133609170740684, guid: 6497758d3c3aaf14b9ff1c6b77d07525, type: 3}
     _defaultObjectCount: 10
+  - _prefab: {fileID: 4980435433315027153, guid: 6457ee9fed7798048a71c973d535a5de, type: 3}
+    _defaultObjectCount: 10
 --- !u!4 &1972603766
 Transform:
   m_ObjectHideFlags: 0

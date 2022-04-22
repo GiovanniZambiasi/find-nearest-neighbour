@@ -4,8 +4,8 @@ namespace NearestNeighbour
 {
     public interface IPoolingService
     {
-        MonoBehaviour Spawn(MonoBehaviour prefab, Vector3 position, Quaternion rotation);
+        Component Spawn(Component prefab, Vector3 position, Quaternion rotation);
 
-        void Release(MonoBehaviour instance);
+        void Release(Component instance);
     }
 }
