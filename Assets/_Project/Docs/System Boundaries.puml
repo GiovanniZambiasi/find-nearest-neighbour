@@ -31,8 +31,17 @@ GameSystem --> PlayerManager
 GameSystem --> PoolingManager
 GameSystem --> UIManager
 
-note "Only the system can cross naspace boundaries" as System
+note "Only the system can cross namespace boundaries" as System
 
+interface IPoolingService
+
+PoolingManager ..|> IPoolingService
+NeighbourManager ..> IPoolingService
+PlayerManager ..> IPoolingService
+
+note "Dependencies of multiple managers go in the root namespace" as Service
+
+IPoolingService . Service
 }
 
 @enduml
