@@ -45,7 +45,7 @@ namespace NearestNeighbour.NeighbourFinder
         {
             if (_nearestNeighbour.IsValid)
             {
-                _view.ShowNearestNeighbourFeedback(_nearestNeighbour.Neighbour.transform.localPosition);
+                _view.ShowNearestNeighbourFeedback(_nearestNeighbour.NeighbourPosition);
             }
             else
             {

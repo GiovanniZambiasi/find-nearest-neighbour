@@ -115,10 +115,13 @@ namespace NearestNeighbour.NeighbourFinder
         {
             ++DistanceQueries;
 
-            float distanceSqr = Vector3.SqrMagnitude(from.transform.localPosition - to.transform.localPosition);
+            Vector3 fromPosition = from.transform.localPosition;
+            Vector3 toPosition = to.transform.localPosition;
 
-            from.UpdateNearestNeighbour(new NeighbourDistanceInfo(to.gameObject, distanceSqr));
-            to.UpdateNearestNeighbour(new NeighbourDistanceInfo(from.gameObject, distanceSqr));
+            float distanceSqr = Vector3.SqrMagnitude(fromPosition - toPosition);
+
+            from.UpdateNearestNeighbour(new NeighbourDistanceInfo(to.gameObject, toPosition, distanceSqr));
+            to.UpdateNearestNeighbour(new NeighbourDistanceInfo(from.gameObject, fromPosition, distanceSqr));
         }
 
         private void UpdateFeedbacks()

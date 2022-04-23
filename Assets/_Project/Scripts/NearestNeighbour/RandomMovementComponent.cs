@@ -8,27 +8,32 @@ namespace NearestNeighbour
 
         [SerializeField] private float _speed = 3f;
 
+        private Transform _transform;
         private Bounds _movementBounds;
         private Vector3 _movementDirection;
+
+        public Vector3 Position { get; private set; }
 
         public void Setup(Bounds movementBounds)
         {
             _movementBounds = movementBounds;
             RandomizeMovementDirection();
+            _transform = transform;
+            Position = _transform.position;
         }
 
         public void Tick(float deltaTime)
         {
-            Vector3 nextPosition = transform.localPosition + _movementDirection * (_speed * deltaTime);
+            Position += _movementDirection * (_speed * deltaTime);
 
-            if (!_movementBounds.Contains(nextPosition))
+            if (!_movementBounds.Contains(Position))
             {
-                nextPosition = _movementBounds.ClosestPoint(nextPosition);
+                Position = _movementBounds.ClosestPoint(Position);
                 RandomizeMovementDirection();
                 OnDirectionChanged?.Invoke();
             }
 
-            transform.localPosition = nextPosition;
+            _transform.localPosition = Position;
         }
 
         private void RandomizeMovementDirection()
@@ -39,7 +44,7 @@ namespace NearestNeighbour
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.blue;
-            Gizmos.DrawRay(transform.localPosition, _movementDirection * 2f);
+            Gizmos.DrawRay(Position, _movementDirection * 2f);
         }
     }
 }

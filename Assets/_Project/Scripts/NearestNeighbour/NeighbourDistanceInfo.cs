@@ -4,23 +4,24 @@ using UnityEngine;
 namespace NearestNeighbour
 {
     /// <summary>
-    /// Represents the squared distance to a particular neighbour. Readonly properties were used instead of standard public fields to ensure devs cannot
-    /// manually force IsValid to be true, and are forced to construct using the constructor.
+    /// Represents the squared distance to a particular neighbour.
     /// <br></br><br></br>
     /// IsValid exists to avoid a <i>nullcheck</i> against Neighbour, improving performance.
     /// </summary>
     public struct NeighbourDistanceInfo : IComparable<NeighbourDistanceInfo>
     {
-        public NeighbourDistanceInfo(GameObject neighbour, float distanceSqr)
+        public readonly GameObject Neighbour;
+        public readonly Vector3 NeighbourPosition;
+        public readonly float DistanceSqr;
+        public readonly bool IsValid;
+
+        public NeighbourDistanceInfo(GameObject neighbour, Vector3 neighbourPosition, float distanceSqr)
         {
             Neighbour = neighbour;
+            NeighbourPosition = neighbourPosition;
             DistanceSqr = distanceSqr;
             IsValid = true;
         }
-
-        public GameObject Neighbour { get; }
-        public float DistanceSqr { get; }
-        public bool IsValid { get; }
 
         public int CompareTo(NeighbourDistanceInfo other)
         {

@@ -1135,7 +1135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _neighbourPrefab: {fileID: 4704270748398357062, guid: 790e2602b2e8c3442bd4fe8fd84fa86d, type: 3}
-  _startingNeighbours: 10
+  _startingNeighbours: 200
   _neighbourLimit: 1000
   _boundsExtents: {x: 33, y: 8.28, z: 33}
 --- !u!4 &867034275
@@ -1551,6 +1551,8 @@ MonoBehaviour:
   _deSpawnButton: {fileID: 1794359615}
   _countLabel: {fileID: 1504868313}
   _queriesLabel: {fileID: 1622447952}
+  _spawnShortcut: 270
+  _deSpawnShortcut: 269
 --- !u!1 &1197773216
 GameObject:
   m_ObjectHideFlags: 0
