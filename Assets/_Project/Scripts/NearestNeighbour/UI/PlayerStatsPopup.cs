@@ -13,7 +13,7 @@ namespace NearestNeighbour.UI
         {
             _projectileCountLabel.text = $"Projectiles: {stats.FiredProjectiles.ToString()}";
             _hitsLabel.text = $"Hits: {stats.Hits.ToString()}";
-            _accuracyLabel.text = $"{(stats.Accuracy * 100f).ToString("0")}%";
+            _accuracyLabel.text = $"Accuracy: {(stats.Accuracy * 100f).ToString("0")}%";
         }
     }
 }

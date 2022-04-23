@@ -32,7 +32,7 @@ namespace NearestNeighbour.Pooling
             {
                 ScheduledDeSpawn deSpawn = _scheduledDeSpawns[i];
 
-                if (elapsedTime >= deSpawn.DespawnTime)
+                if (elapsedTime >= deSpawn.DeSpawnTime)
                 {
                     Release(deSpawn.Object);
                     _scheduledDeSpawns.RemoveAt(i);
@@ -81,7 +81,7 @@ namespace NearestNeighbour.Pooling
             _scheduledDeSpawns.Add(new ScheduledDeSpawn
             {
                 Object = instance,
-                DespawnTime = deSpawnTime,
+                DeSpawnTime = deSpawnTime,
             });
         }
     }

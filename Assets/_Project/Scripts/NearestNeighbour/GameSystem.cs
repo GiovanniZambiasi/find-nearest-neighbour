@@ -28,6 +28,7 @@ namespace NearestNeighbour
             _playerManager.OnStatsChanged += _uiManager.SetPlayerStats;
 
             _uiManager.SetNeighbourCount(_neighbourManager.NeighbourCount);
+            _uiManager.SetPlayerStats(_playerManager.Stats);
         }
 
         private void Update()
