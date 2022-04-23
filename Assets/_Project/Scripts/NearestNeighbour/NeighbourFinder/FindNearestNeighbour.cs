@@ -12,8 +12,11 @@ namespace NearestNeighbour.NeighbourFinder
         private NeighbourDistanceInfo _nearestNeighbour;
         private IPoolingService _poolingService;
 
+        public Transform Transform { get; private set; }
+
         public void Setup(Bounds movementBounds, IPoolingService poolingService)
         {
+            Transform = transform;
             _movementComponent.Setup(movementBounds);
             _poolingService = poolingService;
         }
