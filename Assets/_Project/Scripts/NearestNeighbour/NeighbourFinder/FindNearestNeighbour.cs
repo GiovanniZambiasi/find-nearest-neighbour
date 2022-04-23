@@ -13,6 +13,7 @@ namespace NearestNeighbour.NeighbourFinder
         private IPoolingService _poolingService;
 
         public Transform Transform { get; private set; }
+        public Vector3 Position => _movementComponent.Position;
 
         public void Setup(Bounds movementBounds, IPoolingService poolingService)
         {

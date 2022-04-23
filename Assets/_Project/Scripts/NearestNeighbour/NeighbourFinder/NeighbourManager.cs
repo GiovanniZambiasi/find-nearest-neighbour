@@ -115,8 +115,8 @@ namespace NearestNeighbour.NeighbourFinder
         {
             ++DistanceQueries;
 
-            Vector3 fromPosition = from.Transform.localPosition;
-            Vector3 toPosition = to.Transform.localPosition;
+            Vector3 fromPosition = from.Position;
+            Vector3 toPosition = to.Position;
 
             float distanceSqr = Vector3.SqrMagnitude(fromPosition - toPosition);
 
