@@ -1,10 +1,12 @@
 # Find Nearest Neighbour
 
+A coding test where the brief was to create a system in which cubes have to find their nearest neighbour.
+
 https://user-images.githubusercontent.com/46461122/164943529-ecd152f4-33d9-484c-bc18-f8ad5864c78c.mp4
 
 ## Architecture
-I wanted to have a very clear hierarchical structure, so that the flow of the application was easily 
-understood. I also wanted the core dependencies of each *sub-system* to be very clear for the reader
+I wanted to implement a very clear hierarchical structure, so that the flow of the application was easily 
+understood. I also wanted the core dependencies of each *sub-system* to be visible to the reader
 (as little implicit dependency resolution e.g. singletons or service locators as possible). For those 
 reasons, I ended up using a ``Systems/Managers`` based approach. The `System` is a central point of 
 communication within the application. It uses ``Managers`` to encapsulate more specific behaviour,
@@ -14,7 +16,7 @@ called `GameSystem`. Here's an overview:
 ![Architecture Overview](https://user-images.githubusercontent.com/46461122/164943352-fd12a4fd-7a1b-4ae2-8dd6-ea16260884f8.png)  
 *Architecture Overview*
 
-Then, we have four different managers. Each one lives inside its own ``namespace``. Only types that should
+There are four different managers. Each one lives in its own ``namespace``. Only types that should
 be accessible to *every manager* go in the root ``namespace`` (``NearestNeighbour``). This keeps types organized,
 grouped by dependency. You can think of each child ``namespace`` as a *sub-system*. In some cases, a particular 
 ``Manager`` depends upon another `Manager` (this is the case with the ``PoolingManager``, which is a dependency 
@@ -23,7 +25,7 @@ of both `NeighbourManager` and `PlayerManager`). When this happens, a public ``i
 This ensures that no sub-system needs to know about another sub-system. Keeping consistent abstraction between
 each "branch" of the application.
 
-![System Boundaries](https://user-images.githubusercontent.com/46461122/164943370-acd5e1a1-1c1b-4790-aa09-0916aefd93c4.png)  
+![System Boundaries](https://user-images.githubusercontent.com/46461122/164944166-58768285-5bb6-4328-8ee5-adefe6be64e2.png)  
 *System boundaries (defined by namespace)*
 
 ## Neighbour finding logic
