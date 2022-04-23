@@ -1,0 +1,38 @@
+﻿@startuml
+
+
+package NearestNeighbour
+{
+
+class GameSystem
+
+package Neighbours
+{
+class NeighbourManager
+}
+
+package Player
+{
+class PlayerManager
+}
+
+package Pooling
+{
+class PoolingManager
+}
+
+package UI
+{
+class UIManager
+}
+
+GameSystem --> NeighbourManager
+GameSystem --> PlayerManager
+GameSystem --> PoolingManager
+GameSystem --> UIManager
+
+note "Only the system can cross naspace boundaries" as System
+
+}
+
+@enduml

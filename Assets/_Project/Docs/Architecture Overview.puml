@@ -1,0 +1,46 @@
+﻿@startuml
+
+class GameSystem
+class NeighbourManager
+class PlayerManager
+class PoolingManager
+class UIManager
+
+GameSystem --> NeighbourManager
+GameSystem --> PlayerManager
+GameSystem --> PoolingManager
+GameSystem --> UIManager
+
+class FindNearestNeighbour
+
+NeighbourManager --> FindNearestNeighbour
+
+class Weapon
+
+PlayerManager-->Weapon
+
+class Projectile
+
+Weapon --> Projectile
+
+class NeighboursPopup
+class PlayerStatsPopup
+
+UIManager-->NeighboursPopup
+UIManager-->PlayerStatsPopup
+
+interface IDamageable
+
+FindNearestNeighbour..|>IDamageable
+
+Projectile ..> IDamageable : <- Applies Damage
+
+interface IPoolingService
+
+PoolingManager ...|>IPoolingService
+
+Weapon ..> IPoolingService : <- Spawns projectiles
+
+NeighbourManager ...> IPoolingService : <- Spawns Cubes
+
+@enduml
