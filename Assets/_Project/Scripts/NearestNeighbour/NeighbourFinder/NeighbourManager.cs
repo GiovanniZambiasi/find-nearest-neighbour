@@ -120,8 +120,8 @@ namespace NearestNeighbour.NeighbourFinder
 
             float distanceSqr = Vector3.SqrMagnitude(fromPosition - toPosition);
 
-            from.UpdateNearestNeighbour(new NeighbourDistanceInfo(to.gameObject, toPosition, distanceSqr));
-            to.UpdateNearestNeighbour(new NeighbourDistanceInfo(from.gameObject, fromPosition, distanceSqr));
+            from.UpdateNearestNeighbour(new NeighbourDistanceInfo(to, toPosition, distanceSqr));
+            to.UpdateNearestNeighbour(new NeighbourDistanceInfo(from, fromPosition, distanceSqr));
         }
 
         private void UpdateFeedbacks()
