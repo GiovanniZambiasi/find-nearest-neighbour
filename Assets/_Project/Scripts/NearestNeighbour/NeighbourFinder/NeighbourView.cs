@@ -17,6 +17,11 @@ namespace NearestNeighbour.NeighbourFinder
             _propertyBlock = new MaterialPropertyBlock();
         }
 
+        public void Dispose()
+        {
+            _lineRenderer.enabled = false;
+        }
+
         public void ShowNearestNeighbourFeedback(Vector3 neighbourPosition)
         {
             _lineRenderer.enabled = true;

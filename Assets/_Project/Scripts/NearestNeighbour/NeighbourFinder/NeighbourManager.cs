@@ -145,6 +145,7 @@ namespace NearestNeighbour.NeighbourFinder
                 return;
             }
 
+            neighbour.Dispose();
             neighbour.OnDamaged -= HandleNeighbourDamaged;
             _poolingService.Release(neighbour.gameObject);
         }

@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace NearestNeighbour.NeighbourFinder
 {
@@ -17,6 +16,11 @@ namespace NearestNeighbour.NeighbourFinder
         {
             _movementComponent.Setup(movementBounds);
             _poolingService = poolingService;
+        }
+
+        public void Dispose()
+        {
+            _view.Dispose();
         }
 
         public void UpdateMovement(float deltaTime)
