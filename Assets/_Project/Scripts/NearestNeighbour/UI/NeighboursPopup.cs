@@ -13,17 +13,33 @@ namespace NearestNeighbour.UI
         [SerializeField] private Button _deSpawnButton;
         [SerializeField] private Text _countLabel;
         [SerializeField] private Text _queriesLabel;
+        [Header("Keyboard Shortcuts")]
+        [SerializeField] private KeyCode _spawnShortcut = KeyCode.KeypadPlus;
+        [SerializeField] private KeyCode _deSpawnShortcut = KeyCode.KeypadMinus;
 
         public void Setup()
         {
             _spawnCountInputField.onValidateInput += ValidateInput;
             _spawnCountInputField.onEndEdit.AddListener(HandleInputEditFinished);
 
-            _spawnButton.onClick.AddListener(HandleSpawnButtonClicked);
+            _spawnButton.onClick.AddListener(RequestSpawn);
             _spawnButton.interactable = false;
 
-            _deSpawnButton.onClick.AddListener(HandleDeSpawnButtonClicked);
+            _deSpawnButton.onClick.AddListener(RequestDeSpawn);
             _deSpawnButton.interactable = false;
+        }
+
+        public void Tick()
+        {
+            if (Input.GetKeyDown(_spawnShortcut))
+            {
+                RequestSpawn();
+            }
+
+            if (Input.GetKeyDown(_deSpawnShortcut))
+            {
+                RequestDeSpawn();
+            }
         }
 
         public void SetQueryCount(int queries)
@@ -43,12 +59,12 @@ namespace NearestNeighbour.UI
             _deSpawnButton.interactable = isValidInput;
         }
 
-        private void HandleSpawnButtonClicked()
+        private void RequestSpawn()
         {
             ParseInputAndSendEvent(OnSpawnRequested);
         }
 
-        private void HandleDeSpawnButtonClicked()
+        private void RequestDeSpawn()
         {
             ParseInputAndSendEvent(OnDeSpawnRequested);
         }
@@ -61,7 +77,7 @@ namespace NearestNeighbour.UI
             }
             else
             {
-                Debug.LogError($"Failed to parse input '{_spawnCountInputField.text}'");
+                Debug.LogError($"Failed to parse input '{_spawnCountInputField.text}'. Did you input a valid number?");
             }
         }
 

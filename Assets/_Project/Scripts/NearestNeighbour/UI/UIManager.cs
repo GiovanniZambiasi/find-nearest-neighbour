@@ -23,6 +23,11 @@ namespace NearestNeighbour.UI
             _neighbours.Setup();
         }
 
+        public void Tick()
+        {
+            _neighbours.Tick();
+        }
+
         public void SetNeighbourCount(int neighbourCount)
         {
             _neighbours.SetNeighbourCount(neighbourCount);
