@@ -9,15 +9,13 @@ namespace NearestNeighbour.NeighbourFinder
         [SerializeField] private RandomMovementComponent _movementComponent;
         [SerializeField] private NeighbourView _view;
 
-        private NeighbourDistanceInfo _nearestNeighbour;
+        private NeighbourDistanceInfo _nearestNeighbourInfo;
         private IPoolingService _poolingService;
 
-        public Transform Transform { get; private set; }
         public Vector3 Position => _movementComponent.Position;
 
         public void Setup(Bounds movementBounds, IPoolingService poolingService)
         {
-            Transform = transform;
             _movementComponent.Setup(movementBounds);
             _poolingService = poolingService;
         }
@@ -32,24 +30,29 @@ namespace NearestNeighbour.NeighbourFinder
             _movementComponent.Tick(deltaTime);
         }
 
-        public void UpdateNearestNeighbour(NeighbourDistanceInfo distanceInfo)
+        public void UpdateNearestNeighbour(FindNearestNeighbour neighbour, Vector3 neighbourPosition, float distanceSqr)
         {
-            if (!_nearestNeighbour.IsValid || _nearestNeighbour.DistanceSqr > distanceInfo.DistanceSqr)
+            if (_nearestNeighbourInfo.IsValid && !(_nearestNeighbourInfo.DistanceSqr > distanceSqr))
             {
-                _nearestNeighbour = distanceInfo;
+                return;
             }
+
+            _nearestNeighbourInfo.Neighbour = neighbour;
+            _nearestNeighbourInfo.NeighbourPosition = neighbourPosition;
+            _nearestNeighbourInfo.DistanceSqr = distanceSqr;
+            _nearestNeighbourInfo.IsValid = true;
         }
 
         public void ResetNearestNeighbour()
         {
-            _nearestNeighbour = default;
+            _nearestNeighbourInfo = default;
         }
 
         public void UpdateFeedback()
         {
-            if (_nearestNeighbour.IsValid)
+            if (_nearestNeighbourInfo.IsValid)
             {
-                _view.ShowNearestNeighbourFeedback(_nearestNeighbour.NeighbourPosition);
+                _view.ShowNearestNeighbourFeedback(_nearestNeighbourInfo.NeighbourPosition);
             }
             else
             {
